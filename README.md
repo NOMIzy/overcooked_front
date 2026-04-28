@@ -18,5 +18,5 @@ flutter run -d chrome
 
 ## 效果
 <video controls width="600">
-  <source src="videos/demo.mp4" type="video/mp4">
+  <source src="videos/7_可乐鸡翅组_前端界面演示视频.mp4" type="video/mp4">
 </video>
