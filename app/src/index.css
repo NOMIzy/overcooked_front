@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+
+    --color-dark: #0A0A0A;
+    --color-dark-green: #1A2E1A;
+    --color-green: #4CAF50;
+    --color-orange: #FF9800;
+    --color-light-green: #F1F8F1;
+    --color-text-dark: #2D2D2D;
+    --color-text-light: #E5E5E5;
+    --color-text-muted: #666666;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--color-text-dark);
+    background-color: var(--color-dark);
+    overflow-x: hidden;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===== 3D Inclined Gallery ===== */
+#stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1000px;
+  overflow: hidden;
+  background-color: #0A0A0A;
+  z-index: 0;
+}
+
+#stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.1) 50%, rgba(10,10,10,0.6) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ring {
+  height: 200px;
+  width: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.ring img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: 180px;
+  width: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* ===== Fold Columns ===== */
+.fold-columns-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #FFFFFF;
+}
+
+.fold-column-container {
+  display: flex;
+  height: 60vh;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.fold-column {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.fold-column img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fold-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.fold-content .text {
+  color: #2D2D2D;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* ===== Horizontal Gallery ===== */
+.horizontal-gallery-wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: #0A0A0A;
+  display: flex;
+  align-items: center;
+}
+
+.gallery__inner {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  width: max-content;
+  opacity: 0;
+  will-change: transform;
+}
+
+.gallery-image-container {
+  width: 20vw;
+  height: 30vw;
+  max-height: 60vh;
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gallery-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.gallery-image-container .info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+/* ===== Zigzag Text Carousel ===== */
+@property --rotate-x {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --rotate-y {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --progress {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+.zigzag-scroller {
+  --radius: 25vw;
+  --depth: 50vw;
+  --item-count: 14;
+  transform-style: preserve-3d;
+  font-size: 4rem;
+  font-weight: 700;
+  height: 100vh;
+  overflow: hidden;
+  background: #0A0A0A;
+  color: #4CAF50;
+  position: relative;
+}
+
+.zigzag-track {
+  transform-style: preserve-3d;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+  animation: zigzag-rotate-x 8s linear infinite, zigzag-rotate-y 6s linear infinite;
+}
+
+.zigzag-track::before,
+.zigzag-track::after {
+  content: attr(data-text);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  width: max-content;
+  color: #4CAF50;
+}
+
+.zigzag-track::before {
+  animation: zigzag-scroll calc(20s / var(--velocity, 1)) linear infinite;
+}
+
+.zigzag-track::after {
+  content: attr(data-text-clone);
+  animation: zigzag-scroll calc(20s / var(--velocity, 1)) linear infinite;
+  animation-delay: calc(-10s / var(--velocity, 1));
+}
+
+@keyframes zigzag-rotate-x {
+  0% { --rotate-x: 0deg; }
+  100% { --rotate-x: 360deg; }
+}
+
+@keyframes zigzag-rotate-y {
+  0% { --rotate-y: 0deg; }
+  100% { --rotate-y: 360deg; }
+}
+
+@keyframes zigzag-scroll {
+  0% { translate: 0 0; --progress: 0; }
+  100% { translate: -50% 0; --progress: 1; }
+}
+
+.zigzag-item {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateZ(var(--zigzag-depth, 0)) rotateY(var(--zigzag-angle, 0));
+  font-size: 3rem;
+  font-weight: 700;
+  color: #4CAF50;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+/* ===== Typography ===== */
+.font-heading {
+  font-family: 'Helvetica Neue', "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* ===== Utility ===== */
+.text-green-brand {
+  color: #4CAF50;
+}
+
+.text-orange-brand {
+  color: #FF9800;
+}
+
+.bg-dark {
+  background-color: #0A0A0A;
+}
+
+.bg-dark-green {
+  background-color: #1A2E1A;
+}
+
+.bg-light-green {
+  background-color: #F1F8F1;
+}
+
+.border-green-brand {
+  border-color: #4CAF50;
+}
